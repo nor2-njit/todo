@@ -1,12 +1,14 @@
-<?php include "includes/header.php"; ?>
+<?php 
+include "../includes/header.php"; 
+?>
 
 <main>
-		<img class = "banner" src="images/banner.jpg"/>
+		<img class = "banner" src="../images/banner.jpg"/>
 		<h1> To-Do List </h1>
 
 		<div class="sign_up">
 		<h3> Sign Up </h3>
-		<form action="main/" method="post">
+		<form action="." method="post">
 			<input type="hidden" name="action" value="init_user">
 
 			<div class="fName"> First Name: <br>
@@ -32,11 +34,11 @@
 			<input type="submit" value="Submit"> <br><br>
 
 			<!--Log in-->
-			<a href="log_in.php" name="action" value="login"> Already have an account? Click here. </a>
+			<a href="login.php" name="action" value="login"> Already have an account? Click here. </a>
 		</form>
 		</div>
 
 </main>
 
 
-<?php include 'includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>

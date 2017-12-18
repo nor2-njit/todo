@@ -19,11 +19,11 @@ h3 {
 table {
   margin-left: auto;
   margin-right: auto;
-  padding: 5%;
+  padding: 4%;
 }
 
 .table_list {
-  width: 70%;
+  width: 80%;
 }
 
 form {
@@ -78,7 +78,7 @@ input[type="submit"] {
   color: black;
   border: 0;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
-  width: 50%;
+  width: 85%;
 }
 
 input[type="submit"]:hover {

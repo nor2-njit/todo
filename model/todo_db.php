@@ -3,7 +3,7 @@
 function add_user($email, $fname, $lname, $phone, $birthday, $gender, $password) {
 	global $db;
 	$query = 'INSERT INTO accounts
-			  (id, email, fname, lname, phone, birthday, gender, password)
+			  (email, fname, lname, phone, birthday, gender, password)
 			  VALUES
 			  (:email, :fname, :lname, :phone, :birthday, :gender, :password)';
 	$statement = $db->prepare($query);
@@ -18,6 +18,16 @@ function add_user($email, $fname, $lname, $phone, $birthday, $gender, $password)
     $statement->closeCursor(); 
 }
 
+function get_users() {
+    global $db;
+    $query = 'SELECT * FROM accounts';
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $users = $statement->fetchAll();
+    $statement->closeCursor();
+    return $users;    
+}
+
 function get_user($email) {
 	global $db;
 	$query = 'SELECT * FROM accounts
@@ -30,34 +40,50 @@ function get_user($email) {
     return $user;    
 }
 
-function get_name($email) {
+function get_fname($email) {
 	global $db;
 	$query = 'SELECT * FROM accounts
               WHERE email = :email';
     $statement = $db->prepare($query);
     $statement->bindValue(":email", $email);
     $statement->execute();
-    $account = $statement->fetch();
+    $result = $statement->fetch();
     $statement->closeCursor();
-    $name = $account['fname'];
-    return $name;    
+    $fname = $result['fname'];
+    return $fname;    
 }
 
-function get_user_email($id) {
-	global $db;
-	$query = 'SELECT * FROM accounts
-              WHERE id = :id';
+function get_lname($email) {
+    global $db;
+    $query = 'SELECT * FROM accounts
+              WHERE email = :email';
     $statement = $db->prepare($query);
-    $statement->bindValue(":id", $id);
+    $statement->bindValue(":email", $email);
     $statement->execute();
-
-    return $email;    
+    $result = $statement->fetch();
+    $statement->closeCursor();
+    $lname = $result['lname'];
+    return $lname;   
 }
 
-function get_todos($owneremail) {
+function get_incomplete_todos($owneremail) {
 	global $db;
 	$query = 'SELECT * FROM todos
-              WHERE owneremail = :owneremail';
+              WHERE owneremail = :owneremail AND isdone=0
+              ORDER BY id';
+    $statement = $db->prepare($query);
+    $statement->bindValue(":owneremail", $owneremail);
+    $statement->execute();
+    $todos = $statement->fetchAll();
+    $statement->closeCursor();
+    return $todos; 
+}
+
+function get_complete_todos($owneremail) {
+    global $db;
+    $query = 'SELECT * FROM todos
+              WHERE owneremail = :owneremail AND isdone = 1
+              ORDER BY id';
     $statement = $db->prepare($query);
     $statement->bindValue(":owneremail", $owneremail);
     $statement->execute();
@@ -100,10 +126,10 @@ function edit_todo_date($id, $duedate) {
     $statement->closeCursor(); 
 }
 
-function complete_todo($id, $isdone) {
+function complete_todo($id) {
 	global $db;
 	$query = "UPDATE todos
-			  SET isdone = '1'
+			  SET isdone = 1
               WHERE id = :id";
     $statement = $db->prepare($query);
     $statement->bindValue(":id", $id);
