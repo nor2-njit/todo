@@ -56,26 +56,44 @@ if ($action == 'signup') {
 	$_SESSION['name'] = $fname . " " . $lname;
 	include('todo_list.php');
 
-} else if ($action = 'isdone_todo') {
+} else if ($action == 'add_todo') {
+	$owneremail = ($_SESSION['email']);
+	$createddate = date("Y-m-d");
+	$message = filter_input(INPUT_POST, 'message');
+	$duedate = filter_input(INPUT_POST, 'duedate');
+	add_todo($owneremail, $createddate, $message, $duedate);
+	header("Location: .?action=todo_list");
+
+} else if ($action == 'isdone_todo') {
+	$id = filter_input(INPUT_POST, 'id');
 	complete_todo($id);
 	header("Location: .?action=todo_list");
 
-} else if ($action = 'edit_todo_date') {
+} else if ($action == 'edit') {
+	$incomplete_todos = get_incomplete_todos($_SESSION['email']);
+	$complete_todos = get_complete_todos($_SESSION['email']);
+	include("todo_edit.php");
+
+} else if ($action == 'edit_todo_date') {
+	$id = filter_input(INPUT_POST, 'id');
+	$duedate = filter_input(INPUT_POST, 'duedate');
 	edit_todo_date($id, $duedate);
 	header("Location: .?action=todo_list");
 
-} else if ($action = 'edit_todo_message') {
+} else if ($action == 'edit_todo_message') {
+	$id = filter_input(INPUT_POST, 'id');
+	$message = filter_input(INPUT_POST, 'message');
 	edit_todo_message($id, $message);
 	header("Location: .?action=todo_list");
 
-} else if ($action = 'delete_todo') {
+} else if ($action == 'delete_todo') {
+	$id = filter_input(INPUT_POST, 'id');
 	delete_todo($id);
 	header("Location: .?action=todo_list");
 
-} else if ($action = 'sign_out') {
+} else if ($action == 'sign_out') {
 	session_destroy();
 	header("Location: .?action=signup");
 }
-
 
 ?>

@@ -6,13 +6,15 @@ include '../includes/header.php';
 <main>
 	<img class = "banner" src="../images/banner.jpg"/>
 	<h1> Welcome <?php echo " " . $_SESSION['name']; ?></h1>
+
 	<table align="center" class="table_list"> <h3> Incomplete </h3>
 		<tr>
 			<th> ID </th>
 			<th> Task </th>
 			<th> Create Date </th>
 			<th> Due Date </th>
-			<th> Complete</th>
+			<th> Complete </th>
+			<th>  </th>
 			<th>  </th>
 			<th>  </th>
 		</tr>
@@ -25,7 +27,7 @@ include '../includes/header.php';
 			<td><?php echo $todo['duedate']; ?>     </td>
 			<td><?php echo $todo['isdone']; ?>      </td>
 			<td>
-				<form action="." method="post">
+				<form action="index.php" method="post">
 					<input type="hidden" name="action" value="isdone_todo">
                     <input type="hidden" name="id" value="<?php echo $todo['id']; ?>">
                     <input type="submit" value="Complete">
@@ -34,7 +36,7 @@ include '../includes/header.php';
 
 			<td> 
 				<form action="." method="post">
-					<input type="hidden" name="action" value="edit_todo">
+					<input type="hidden" name="action" value="edit">
                     <input type="hidden" name="id" value="<?php echo $todo['id']; ?>">
                     <input type="submit" value="Edit">
 				</form>
@@ -77,18 +79,20 @@ include '../includes/header.php';
 		<?php } ?>
 	</table>
 
-	<form method="POST" id="add_form"> </form>
+	<form action="index.php" method="post">
 	<table align="center" class="table_list"> <h3> Add A New To-Do </h3>
 		<tr>
 			<th> Message </th>
 			<th> Due Date </th>
 		</tr>
-		<tr>
-			<td> <input type="text" name="message" form="add_form"/> </td>
-			<td> <input type="date" name="duedate" form="add_form"/> </td>
-			<td> <input type="submit" value="Add" form="add_form"/>  </td>
+		<tr> 
+			<input type="hidden" name="action" value="add_todo">
+			<td> <input type="text" name="message"> </td>
+			<td> <input type="date" name="duedate"> </td>
+			<td> <input type="submit" value="Add">  </td>
 		</tr>
 	</table>
+	</form>
 
 	<a href="." align="center" action="sign_out"> <h4> Sign Out </h4> </a>
 

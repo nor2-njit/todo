@@ -92,16 +92,18 @@ function get_complete_todos($owneremail) {
     return $todos; 
 }
 
-function add_todo($owneremail, $message, $duedate) {
+function add_todo($owneremail, $createddate, $message, $duedate) {
 	global $db;
 	$query = 'INSERT INTO todos
-			  (id, owneremail, createddate, duedate, message, isdone)
+			  (owneremail, createddate, duedate, message, isdone)
               VALUES
-              (:id, :owneremail, :createddate, :duedate, :message, :isdone)';
+              (:owneremail, :createddate, :duedate, :message, 0)';
     $statement = $db->prepare($query);
     $statement->bindValue(":owneremail", $owneremail);
     $statement->bindValue(":message", $message);
+    $statement->bindValue(":createddate", $createddate);
     $statement->bindValue(":duedate", $duedate);
+
     $statement->execute();
 }
 
@@ -112,16 +114,18 @@ function edit_todo_message($id, $message) {
               WHERE id = :id";
     $statement = $db->prepare($query);
     $statement->bindValue(":message", $message);
+    $statement->bindValue('id', $id);
     $statement->execute();
 }
 
 function edit_todo_date($id, $duedate) {
 	global $db;
 	$query = "UPDATE todos
-			  SET message = :message
+			  SET duedate = :duedate
               WHERE id = :id";
     $statement = $db->prepare($query);
-    $statement->bindValue(':message', $message);
+    $statement->bindValue(':duedate', $duedate);
+    $statement->bindValue('id', $id);
     $statement->execute();
     $statement->closeCursor(); 
 }
